@@ -79,6 +79,52 @@ git push origin main
 
 融合した機能は、このリポジトリのルートディレクトリまたは `src/` ディレクトリに配置して開発します。
 
+## ブランチ保護
+
+mainブランチへの直接プッシュを防ぐため、以下の設定を推奨します。
+
+### 方法1: GitHub Proを使用（推奨）
+
+GitHub Proアカウントをお持ちの場合、GitHubのWebインターフェースからブランチ保護を設定できます：
+
+1. リポジトリの Settings → Branches
+2. Branch protection rules → Add rule
+3. Branch name pattern: `main`
+4. 以下を有効化：
+   - Require a pull request before merging
+   - Require approvals: 1（必要に応じて）
+
+### 方法2: Git pre-pushフック（ローカル設定）
+
+各開発者のローカル環境でpre-pushフックを設定：
+
+```bash
+# pre-pushフックをインストール
+cp .github/hooks/pre-push .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+これにより、mainブランチへの直接プッシュがローカルでブロックされます。
+
+### 推奨ワークフロー
+
+mainブランチへの変更は、必ずプルリクエスト経由で行ってください：
+
+```bash
+# 1. ブランチを作成
+git checkout -b feature/your-feature
+
+# 2. 変更をコミット
+git add .
+git commit -m "変更内容"
+
+# 3. ブランチをプッシュ
+git push origin feature/your-feature
+
+# 4. プルリクエストを作成
+gh pr create --title "変更内容" --body "説明"
+```
+
 ## ライセンス
 
 各サブモジュールのライセンスに従います。
