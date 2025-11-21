@@ -1,13 +1,13 @@
 # Multi-Agent Tmux to GitHub Action
 
-このリポジトリは、2 つのリポジトリの機能を融合したプロジェクトです。
+このリポジトリは、2つのリポジトリの機能を融合したプロジェクトです。
 
 ## 構成
 
-このリポジトリは以下の 2 つのサブモジュールを含んでいます：
+このリポジトリは以下の2つのサブモジュールを含んでいます：
 
-- **[codex-auto-review](./codex-auto-review/)**: GitHub Actions と Codex を使った自動コードレビューシステム
-- **[multi-agent-tmux](./multi-agent-tmux/)**: Multi-agent tmux システム
+- **[codex-auto-review](./codex-auto-review/)**: GitHub ActionsとCodexを使った自動コードレビューシステム
+- **[multi-agent-tmux](./multi-agent-tmux/)**: Multi-agent tmuxシステム
 
 ## セットアップ
 
@@ -81,11 +81,11 @@ git push origin main
 
 ## ブランチ保護
 
-main ブランチへの直接プッシュを防ぐため、以下の設定を推奨します。
+mainブランチへの直接プッシュを防ぐため、以下の設定を推奨します。
 
-### 方法 1: GitHub Pro を使用（推奨）
+### 方法1: GitHub Proを使用（推奨）
 
-GitHub Pro アカウントをお持ちの場合、GitHub の Web インターフェースからブランチ保護を設定できます：
+GitHub Proアカウントをお持ちの場合、GitHubのWebインターフェースからブランチ保護を設定できます：
 
 1. リポジトリの Settings → Branches
 2. Branch protection rules → Add rule
@@ -94,9 +94,9 @@ GitHub Pro アカウントをお持ちの場合、GitHub の Web インターフ
    - Require a pull request before merging
    - Require approvals: 1（必要に応じて）
 
-### 方法 2: Git pre-push フック（ローカル設定）
+### 方法2: Git pre-pushフック（ローカル設定）
 
-各開発者のローカル環境で pre-push フックを設定：
+各開発者のローカル環境でpre-pushフックを設定：
 
 ```bash
 # pre-pushフックをインストール
@@ -104,11 +104,11 @@ cp .github/hooks/pre-push .git/hooks/pre-push
 chmod +x .git/hooks/pre-push
 ```
 
-これにより、main ブランチへの直接プッシュがローカルでブロックされます。
+これにより、mainブランチへの直接プッシュがローカルでブロックされます。
 
 ### 推奨ワークフロー
 
-main ブランチへの変更は、必ずプルリクエスト経由で行ってください：
+mainブランチへの変更は、必ずプルリクエスト経由で行ってください：
 
 ```bash
 # 1. ブランチを作成
@@ -128,3 +128,4 @@ gh pr create --title "変更内容" --body "説明"
 ## ライセンス
 
 各サブモジュールのライセンスに従います。
+
