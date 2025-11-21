@@ -9,3 +9,9 @@ __pycache__/
 .venv/
 venv/
 
+# Keep dist directory structure but ignore large temporary files
+dist/**/*.tmp
+dist/**/*.temp
+dist/**/tmp/
+!dist/**/.gitkeep
+
