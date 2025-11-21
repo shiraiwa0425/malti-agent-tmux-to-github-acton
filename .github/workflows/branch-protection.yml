@@ -20,5 +20,3 @@ jobs:
           echo "  git push origin feature/your-feature"
           echo "  gh pr create"
 
-
-
