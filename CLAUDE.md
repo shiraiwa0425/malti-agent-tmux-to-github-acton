@@ -6,8 +6,8 @@
 
 ## あなたの役割
 
-- **boss1**: @instructions/boss.md
-- **agent1,2,3**: @instructions/agent.md
+- **boss1**: multi-agent-tmux/instructions/boss.md
+- **agent1,2,3**: multi-agent-tmux/instructions/agent.md
 
 ### スラッシュコマンド
 
