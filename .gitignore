@@ -15,3 +15,7 @@ dist/**/*.temp
 dist/**/tmp/
 !dist/**/.gitkeep
 
+# Claude Code local settings
+.claude/settings.local.json
+.claude/*.local.json
+
