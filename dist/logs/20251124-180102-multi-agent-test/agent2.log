@@ -1,0 +1,62 @@
+
+ ▐▛███▜▌   Claude Code v2.0.50
+▝▜█████▛▘  Sonnet 4.5
+           Claude Max
+  ▘▘ ▝▝    …/malti-agent-tmux-…
+
+
+> あなたはエージェント2です。動作確認テストを実行
+します。親ディレクトリのPROJECT_CONTEXT.mdから「評
+価項目例」セクションを抽出して、箇条書きで表示して
+ください。
+
+⏺ 親ディレクトリのPROJECT_CONTEXT.mdを読み取ります
+  。
+
+⏺ Read(PROJECT_CONTEXT.md)
+  ⎿  Read 236 lines
+
+⏺ PROJECT_CONTEXT.mdから「評価項目例」セクションを
+  抽出しました：
+
+  評価項目例
+
+  codex-auto-review の評価
+
+  - レビューコメントの精度
+  - P1/P2/P3 バッジの適切性
+  - 応答時間
+  - 見逃された問題の有無
+
+  multi-agent-tmux の評価
+
+  - エージェント間の協調動作の効率性
+  - タスク振り分けの適切性
+  - メッセージ送受信の信頼性
+  - 複数エージェントによる処理の高速化効果
+
+──────────────────────────────────────────────────────
+>
+
+──────────────────────────────────────────────────────
+  ? for             Found 5 invalid settings files ·
+  shortcuts         /doctor for details
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
