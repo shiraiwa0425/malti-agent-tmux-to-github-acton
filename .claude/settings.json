@@ -7,9 +7,5 @@
       "Read(./.env.*)",
       "Read(./secrets/**)"
     ]
-  },
-  "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
-    "OTEL_METRICS_EXPORTER": "otlp"
   }
 }
