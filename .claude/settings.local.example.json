@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(npm install)",
+      "Bash(npm run:*)",
+      "Bash(tmux:*)",
+      "Read(**/*.json)",
+      "Read(**/*.md)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(sudo rm:*)",
+      "Read(~/.ssh/**)"
+    ],
+    "ask": [
+      "Bash(gh pr merge:*)",
+      "Bash(npm publish:*)"
+    ]
+  },
+  "env": {
+    "YOUR_API_KEY": "your-api-key-here",
+    "CUSTOM_ENV_VAR": "custom-value"
+  }
+}
