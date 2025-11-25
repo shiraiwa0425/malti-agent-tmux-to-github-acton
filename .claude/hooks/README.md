@@ -24,7 +24,30 @@
 - 新規セッション開始時（startup）
 - 既存セッション再開時（resume）
 
-### 2. setup.shとの連携
+### 2. ボスによるエージェント自動初期化
+
+ボス（ペイン0）は、ファイル読み込み後に**エージェント1,2,3を自動的に初期化**します。
+
+**初期化フロー**:
+```
+1. ボス起動 → フックでファイル読み込み指示
+2. ボスがファイルを読み込み
+3. ボスがエージェント1,2,3に初期化メッセージを送信
+4. 各エージェントがファイル読み込み → 準備完了報告
+5. ボスがユーザーのリクエストを待機
+```
+
+**ボスが送信する初期化コマンド**:
+```bash
+cd multi-agent-tmux && ./send-message.sh エージェント1 "あなたはエージェント1です。以下のファイルを読み込んで役割を理解してください：
+1. PROJECT_CONTEXT.md
+2. multi-agent-tmux/instructions/agent.md
+読み込み完了したら「エージェント1準備完了」と報告してください。"
+
+# エージェント2, 3も同様
+```
+
+### 4. setup.shとの連携
 
 `multi-agent-tmux/setup.sh`で各ペインに環境変数を設定してClaude Codeを起動：
 
@@ -36,7 +59,7 @@ CLAUDE_ROLE=boss claude
 CLAUDE_ROLE=agent claude
 ```
 
-### 3. settings.json設定
+### 5. settings.json設定
 
 `.claude/settings.json`で以下のように設定されています：
 
