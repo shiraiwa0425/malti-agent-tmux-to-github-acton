@@ -11,12 +11,10 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume",
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/init_session.sh",
-            "statusMessage": "セッションを初期化中..."
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/init_session.sh"
           }
         ]
       }

@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# エラーハンドリング
+set -e
+
+# セッション情報を出力（Claudeのコンテキストに追加される）
+echo "=== セッション初期化 ==="
+echo "プロジェクト: $(basename $CLAUDE_PROJECT_DIR)"
+echo "ブランチ: $(git branch --show-current 2>/dev/null || echo 'N/A')"
+echo "最終コミット: $(git log -1 --oneline 2>/dev/null || echo 'N/A')"
+echo ""
+
 # セッション初期化フック
 # SessionStart時に自動実行
 # CLAUDE_ROLE環境変数でボス/エージェントを区別
@@ -117,3 +127,6 @@ CLAUDE.mdを読んで役割を確認してください。
 
 EOF
 fi
+
+# Exit code 0で終了すると、上記のstdoutがClaudeのコンテキストに追加されます
+exit 0
