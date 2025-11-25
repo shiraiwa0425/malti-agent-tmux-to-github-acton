@@ -11,12 +11,11 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume",
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/init_boss.sh",
-            "statusMessage": "BOSSエージェントを初期化中..."
+            "command": "./.claude/hooks/session_log.sh"
           }
         ]
       }

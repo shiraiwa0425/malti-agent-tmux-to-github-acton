@@ -1,4 +1,4 @@
-# Claude Code フック - BOSS自動初期化
+# Claude Code フック - セッション自動初期化
 
 ## 概要
 
@@ -6,25 +6,63 @@
 
 ## フックの目的
 
-BOSSエージェント（ペイン0）として動作する際に、セッション開始時に必要なコンテキストを自動的に読み込み、必要なファイルの確認を促すためのものです。
+マルチエージェントシステムで、ボスとエージェントに応じた適切な初期化を行い、必要なファイルの読み込みを促すためのものです。
 
 ## 実装内容
 
-### 1. init_boss.sh
+### 1. session_log.sh（メインスクリプト）
 
-セッション開始時（startup/resume）に自動実行されるスクリプトです。
+セッション開始時（startup）に自動実行されるスクリプトです。
+`CLAUDE_ROLE`環境変数を見て、ボス/エージェントで異なるコンテキストを出力します。
 
-**機能**:
-- BOSSエージェントとしての役割を明示
-- セッション開始時に確認すべきファイルリストを表示
-- ワークフローの概要を提示
-- コマンド例を表示
+**主な機能**:
 
-**実行タイミング**:
-- 新規セッション開始時（startup）
-- 既存セッション再開時（resume）
+1. **セッションログ記録** - 起動情報をJSONL形式で保存
+2. **エラーログ記録** - スクリプトエラー時にログを残す（`trap ERR`）
+3. **環境変数読み込み** - `.env`ファイルがあれば読み込み
+4. **コンテキスト出力** - `.claude/context/`配下のマークダウンを出力
 
-### 2. settings.json設定
+**環境変数による分岐**:
+- `CLAUDE_ROLE=boss` → ボス用コンテキスト（`context/boss.md`）
+- `CLAUDE_ROLE=agent` → エージェント用コンテキスト（`context/agent.md`）
+- 未設定 → デフォルトコンテキスト（`context/default.md`）
+
+### 2. ログファイル
+
+ログは `.claude/hooks/logs/` ディレクトリに保存されます：
+
+| ファイル | 内容 |
+|---------|------|
+| `session_log.jsonl` | セッション開始ログ（JSON Lines形式） |
+| `error.log` | エラー発生時のログ（行番号・コマンド付き） |
+
+**ログ例**:
+
+```
+# session_log.jsonl
+[20251125-230000] {"type":"SessionStart","trigger":"startup",...}
+[20251125-230000] Session started - CLAUDE_ROLE=boss, PWD=/path/to/project
+
+# error.log（エラー発生時のみ）
+[20251125-230000] ERROR: Script failed at line 25: cat "$context_dir/boss.md"
+```
+
+### 3. コンテキストファイル
+
+`.claude/context/` ディレクトリにマークダウンファイルを配置することで、セッション開始時に自動読み込みされます：
+
+```
+.claude/context/
+├── 00-common.md    # 共通コンテキスト（全員に表示）
+├── boss.md         # ボス用コンテキスト
+├── agent.md        # エージェント用コンテキスト
+└── default.md      # 通常起動時のコンテキスト
+```
+
+- `00-`で始まるファイルは全員に表示されます
+- `CLAUDE_ROLE`に応じて対応するファイルが追加で表示されます
+
+### 4. settings.json設定
 
 `.claude/settings.json`で以下のように設定されています：
 
@@ -33,12 +71,11 @@ BOSSエージェント（ペイン0）として動作する際に、セッショ
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume",
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/init_boss.sh",
-            "statusMessage": "BOSSエージェントを初期化中..."
+            "command": "./.claude/hooks/session_log.sh"
           }
         ]
       }
@@ -47,45 +84,95 @@ BOSSエージェント（ペイン0）として動作する際に、セッショ
 }
 ```
 
-## BOSS用必読ファイル
+### 5. setup.shとの連携
 
-フックでは以下のファイルを確認するよう促します：
+`multi-agent-tmux/setup.sh`で各ペインに環境変数を設定してClaude Codeを起動：
 
-1. **PROJECT_CONTEXT.md** - プロジェクト全体の目的・構造
-2. **.claude/guides/commander.md** - ボスの役割と判断フローチャート
-3. **multi-agent-tmux/instructions/boss.md** - タスク振り分け方法
+```bash
+# ペイン0（ボス）
+CLAUDE_ROLE=boss claude
+
+# ペイン1,2,3（エージェント）
+CLAUDE_ROLE=agent claude
+```
 
 ## テスト方法
 
 ### 手動テスト
 
 ```bash
-bash .claude/hooks/init_boss.sh
+# ボスとして（入力をシミュレート）
+echo '{"type":"SessionStart"}' | CLAUDE_ROLE=boss ./.claude/hooks/session_log.sh
+
+# エージェントとして
+echo '{"type":"SessionStart"}' | CLAUDE_ROLE=agent ./.claude/hooks/session_log.sh
+
+# 通常起動
+echo '{"type":"SessionStart"}' | ./.claude/hooks/session_log.sh
+```
+
+### ログ確認
+
+```bash
+# セッションログ確認
+cat .claude/hooks/logs/session_log.jsonl
+
+# エラーログ確認（あれば）
+cat .claude/hooks/logs/error.log
 ```
 
 ### 実際のテスト
 
-Claude Codeセッションを再起動してフックが自動実行されることを確認します：
-
-1. `/clear` コマンドを実行
-2. 新しいセッションを開始
-3. フックメッセージが表示されることを確認
+1. `multi-agent-tmux/setup.sh`を実行
+2. 各ペインで適切な初期化メッセージが表示されることを確認
+3. ボス（ペイン0）とエージェント（ペイン1,2,3）で異なるメッセージが出ることを確認
 
 ## トラブルシューティング
 
-### フックが実行されない
+### フックが実行されない / hook error が出る
 
-- スクリプトに実行権限があることを確認: `ls -la .claude/hooks/init_boss.sh`
-- settings.jsonの設定が正しいことを確認
-- Claude Codeを再起動してみる
+1. **実行権限を確認**:
+   ```bash
+   ls -la .claude/hooks/session_log.sh
+   # -rwxr-xr-x であること
 
-### エラーメッセージが表示される
+   # 権限がなければ付与
+   chmod +x .claude/hooks/session_log.sh
+   ```
 
-- スクリプトの構文エラーを確認: `bash -n .claude/hooks/init_boss.sh`
-- パスが正しいことを確認（相対パスで記述）
+2. **settings.jsonの設定を確認**
+
+3. **エラーログを確認**:
+   ```bash
+   cat .claude/hooks/logs/error.log
+   ```
+
+### 環境変数が反映されない
+
+- setup.shが正しく環境変数を設定しているか確認
+- tmuxペイン内で`echo $CLAUDE_ROLE`を実行して確認
+
+### スクリプトの構文エラー
+
+```bash
+# 構文チェック
+bash -n .claude/hooks/session_log.sh
+```
+
+## ファイル構成
+
+```
+.claude/hooks/
+├── README.md          # このファイル
+├── session_log.sh     # メイン初期化スクリプト（CLAUDE_ROLEで分岐）
+└── logs/              # ログディレクトリ（自動作成）
+    ├── session_log.jsonl  # セッションログ
+    └── error.log          # エラーログ
+```
 
 ## 関連ドキュメント
 
 - [CLAUDE.md](../../CLAUDE.md) - Claude Code設定の全体像
 - [PROJECT_CONTEXT.md](../../PROJECT_CONTEXT.md) - プロジェクトコンテキスト
 - [.claude/guides/commander.md](../guides/commander.md) - BOSSガイド
+- [multi-agent-tmux/setup.sh](../../multi-agent-tmux/setup.sh) - セッション作成スクリプト
