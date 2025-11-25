@@ -47,7 +47,7 @@ cd multi-agent-tmux && ./send-message.sh エージェント1 "あなたはエー
 # エージェント2, 3も同様
 ```
 
-### 4. setup.shとの連携
+### 3. setup.shとの連携
 
 `multi-agent-tmux/setup.sh`で各ペインに環境変数を設定してClaude Codeを起動：
 
@@ -59,7 +59,7 @@ CLAUDE_ROLE=boss claude
 CLAUDE_ROLE=agent claude
 ```
 
-### 5. settings.json設定
+### 4. settings.json設定
 
 `.claude/settings.json`で以下のように設定されています：
 
@@ -68,12 +68,10 @@ CLAUDE_ROLE=agent claude
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume",
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/init_session.sh",
-            "statusMessage": "セッションを初期化中..."
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/init_session.sh"
           }
         ]
       }
