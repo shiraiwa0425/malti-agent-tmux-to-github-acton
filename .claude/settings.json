@@ -7,5 +7,19 @@
       "Read(./.env.*)",
       "Read(./secrets/**)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/init_boss.sh",
+            "statusMessage": "BOSSエージェントを初期化中..."
+          }
+        ]
+      }
+    ]
   }
 }
