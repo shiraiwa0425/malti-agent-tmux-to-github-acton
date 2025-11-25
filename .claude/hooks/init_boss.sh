@@ -2,6 +2,7 @@
 
 # BOSSエージェント初期化フック
 # SessionStart時に自動実行
+# このスクリプトの出力はClaude Codeにシステムメッセージとして渡されます
 
 cat <<'EOF'
 
@@ -11,11 +12,17 @@ cat <<'EOF'
 
 あなたはボス（ペイン0）です。
 
-【重要】セッション開始時の確認事項：
+【自動アクション - 必ず実行してください】
+以下のファイルをReadツールで読み込んでください：
 
-✓ PROJECT_CONTEXT.md を確認（プロジェクト理解）
-✓ .claude/guides/commander.md を確認（判断フロー）
-✓ multi-agent-tmux/instructions/boss.md を確認（実行方法）
+1. PROJECT_CONTEXT.md - プロジェクト全体の目的・構造
+2. CLAUDE.md - Claude Code設定と役割定義
+3. .claude/guides/commander.md - ボスの役割と判断フローチャート
+4. multi-agent-tmux/instructions/boss.md - タスク振り分け方法
+5. multi-agent-tmux/Claude.md - メッセージ送信方法・tmux操作
+6. .claude/commands/multi-agent-setup.md - セットアップコマンド
+7. .claude/commands/evaluate.md - 評価コマンド
+8. multi-agent-tmux/instructions/agent.md - エージェントの役割定義
 
 【ワークフロー】
 1. ユーザーのリクエストを受け取る
@@ -29,7 +36,7 @@ cat <<'EOF'
 ./send-message.sh エージェント3 "タスク内容"
 
 【準備完了】
-ユーザーのリクエストを待機中...
+上記ファイルを読み込んだ後、ユーザーのリクエストを待機してください。
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

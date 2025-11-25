@@ -15,8 +15,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/init_boss.sh",
-            "statusMessage": "BOSSエージェントを初期化中..."
+            "command": ".claude/hooks/init_session.sh",
+            "statusMessage": "セッションを初期化中..."
           }
         ]
       }
