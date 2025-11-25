@@ -11,10 +11,11 @@
   "hooks": {
     "SessionStart": [
       {
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/init_session.sh"
+            "command": "./.claude/hooks/session_log.sh"
           }
         ]
       }
