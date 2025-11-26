@@ -81,15 +81,12 @@ dist/
 
 **命名規則**: `YYYYMMDD-HHMMSS-プロジェクト名`（例: `20251124-190104-ai-news-page`）
 
-### 現在の成果物
+### 成果物について
 
-#### AI News Page
-- **場所**: `dist/outputs/20251124-190104-ai-news-page/`
-- **技術**: Next.js 16 / React 19 / Tailwind CSS 4 / TypeScript
-- **機能**: ニュース一覧、検索、ダークモード、REST API
-- **データ**: モックデータ使用（NewsAPI.org接続コード実装済み）
+`dist/outputs/`はGitで管理されていません（`.gitignore`で除外）。成果物はローカル環境でのみ存在します。
 
-#### 過去の成果物
+#### 過去に作成した成果物（参考）
+- AI News Page（Next.js 16 / React 19 / Tailwind CSS 4）
 - 松葉蟹紹介ページ（Three.js使用）
 - レストラン経費アプリ
 - 松葉蟹メニューシステム
