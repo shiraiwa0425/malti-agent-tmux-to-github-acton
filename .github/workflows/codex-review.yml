@@ -42,33 +42,28 @@ jobs:
             const agentsConfig = fs.readFileSync('AGENTS.md', 'utf8');
 
             // Codexへのレビュー依頼コメントを作成
-            const commentBody = `@Codex このPRをレビューしてください。
-
-以下のプロジェクトコンテキストとレビュー観点を確認してください：
-
-<details>
-<summary>PROJECT_CONTEXT.md</summary>
-
-\`\`\`markdown
-${projectContext}
-\`\`\`
-</details>
-
-<details>
-<summary>AGENTS.md (Codex設定)</summary>
-
-\`\`\`markdown
-${agentsConfig}
-\`\`\`
-</details>
-
-特に以下の観点を確認してください：
-- 成果物が \`dist/\` ディレクトリに配置されているか
-- サブモジュールの扱いが適切か
-- ブランチ保護のルールが守られているか
-- 評価ドキュメントが適切に記載されているか
-
-レビュー結果はP1/P2/P3バッジを使用して分類してください。`;
+            const commentBody = [
+              '@Codex このPRをレビューしてください。',
+              '',
+              '以下のプロジェクトコンテキストとレビュー観点を確認してください：',
+              '',
+              '<details>',
+              '<summary>PROJECT_CONTEXT.md</summary>',
+              '',
+              '```markdown',
+              projectContext,
+              '```',
+              '</details>',
+              '',
+              '<details>',
+              '<summary>AGENTS.md (Codex設定)</summary>',
+              '',
+              '```markdown',
+              agentsConfig,
+              '```',
+              '</details>',
+              ''
+            ].join('\n');
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
