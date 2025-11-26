@@ -22,3 +22,6 @@ dist/outputs/
 .claude/settings.local.json
 .claude/*.local.json
 
+# Claude Code session logs
+.claude/hooks/logs/session_log.jsonl
+
