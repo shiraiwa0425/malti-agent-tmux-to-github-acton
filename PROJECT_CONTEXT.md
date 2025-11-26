@@ -2,18 +2,44 @@
 
 このドキュメントは、すべてのAIアシスタント（Claude、Cursor、Codex等）が参照する共通のプロジェクト情報です。
 
-## プロジェクトの目的
+**最終更新**: 2025年11月26日
 
-このプロジェクトは、2つのマルチエージェントシステム（codex-auto-review、multi-agent-tmux）の動作を評価するためのプロジェクトです。
+## クイックスタート
+
+### multi-agent-tmux を使う場合
+
+```bash
+# 1. セッション作成
+./multi-agent-tmux/setup.sh
+
+# 2. エージェントにメッセージ送信
+./multi-agent-tmux/send-message.sh エージェント1 "タスク内容"
+./multi-agent-tmux/send-message.sh エージェント2 "タスク内容"
+./multi-agent-tmux/send-message.sh エージェント3 "タスク内容"
+
+# 3. 完了フラグクリア（新タスク前）
+./multi-agent-tmux/clear-flags.sh
+```
+
+### エイリアス一覧
+
+| エイリアス | ペイン | 役割 |
+|-----------|--------|------|
+| `ボス` / `command` | 0 | タスク振り分け |
+| `エージェント1` / `agent1` | 1 | タスク実行 |
+| `エージェント2` / `agent2` | 2 | タスク実行 |
+| `エージェント3` / `agent3` | 3 | タスク実行 |
+
+## プロジェクトの目的
 
 - マルチエージェントシステムの動作検証と評価
 - 各システムの性能とタスク処理能力の測定
-- 改善点の特定とフィードバックの収集
+- 実際のWebアプリケーション開発を通じた評価
 
 ## 評価対象システム
 
 ### 1. codex-auto-review
-GitHub Actions と Codex を使った自動コードレビューシステム
+GitHub Actions + Codex による自動コードレビューシステム
 
 **詳細**: [codex-auto-review/AGENTS.md](codex-auto-review/AGENTS.md)
 
@@ -22,214 +48,119 @@ tmux上で複数のClaude Codeエージェントを協調動作させるシス�
 
 **詳細**: [multi-agent-tmux/Claude.md](multi-agent-tmux/Claude.md)
 
-## 成果物の保管場所
+```
+┌──────────────────────────────────────────────────┐
+│              tmuxセッション: claude               │
+├──────────┬──────────┬──────────┬──────────┤
+│  ペイン0  │  ペイン1  │  ペイン2  │  ペイン3  │
+│   ボス   │エージェント1│エージェント2│エージェント3│
+└──────────┴──────────┴──────────┴──────────┘
+```
 
-本プロジェクトでは、すべての評価成果物を `dist/` ディレクトリに集約します。
+| スクリプト | 機能 |
+|-----------|------|
+| `setup.sh` | tmuxセッション作成 |
+| `send-message.sh` | メッセージ送信 |
+| `orchestrate.sh` | 自動タスク振り分け |
+| `clear-flags.sh` | 完了フラグクリア |
 
-### ディレクトリ構造
+**環境変数**: `CLAUDE_ROLE`（boss/agent）、`PANE_INDEX`（0-3）
+
+## 成果物
+
+すべての成果物は `dist/` ディレクトリに集約します。
 
 ```
 dist/
-├── outputs/          # マルチエージェントの生成物（コード、ドキュメント等）
-├── evaluations/      # 評価結果とレポート
-├── logs/             # 実行ログ
-└── artifacts/        # その他の成果物（スクリーンショット等）
+├── outputs/      # 生成物（コード、アプリ等）
+├── evaluations/  # 評価レポート
+├── logs/         # 実行ログ
+├── artifacts/    # スクリーンショット等
+└── tmp/          # 完了フラグ（一時ファイル）
 ```
 
-**詳細**: [dist/README.md](dist/README.md)
+**命名規則**: `YYYYMMDD-HHMMSS-プロジェクト名`（例: `20251124-190104-ai-news-page`）
 
-### 重要ルール
+### 現在の成果物
 
-- **グローバルディレクトリには成果物を置かない**
-- すべての評価関連ファイルは `dist/` に集約する
-- 各評価実行ごとにタイムスタンプ付きのサブディレクトリを作成することを推奨
-  ```
-  例: dist/outputs/20250121-143022-codex-review-test/
-  ```
+#### AI News Page
+- **場所**: `dist/outputs/20251124-190104-ai-news-page/`
+- **技術**: Next.js 16 / React 19 / Tailwind CSS 4 / TypeScript
+- **機能**: ニュース一覧、検索、ダークモード、REST API
+- **データ**: モックデータ使用（NewsAPI.org接続コード実装済み）
 
-## Git操作の重要事項
+#### 過去の成果物
+- 松葉蟹紹介ページ（Three.js使用）
+- レストラン経費アプリ
+- 松葉蟹メニューシステム
 
-### サブモジュール構成
+## マルチエージェントの使用判断
 
-このプロジェクトは2つのサブモジュールを含んでいます：
-- **codex-auto-review**: サブモジュール1
-- **multi-agent-tmux**: サブモジュール2
+以下を**すべて満たす**場合に使用：
 
-### サブモジュール内で変更を行う場合の手順
+1. ✅ 並行処理できる独立したサブタスクが3つ以上
+2. ✅ 各サブタスクの所要時間が5分以上
+3. ✅ 30分以上かかる作業
 
-**重要**: サブモジュール内で変更を行う場合は、必ず以下の手順に従ってください：
+**詳細**: [.claude/guides/commander.md](.claude/guides/commander.md)
 
-```bash
-# 1. サブモジュールに移動
-cd codex-auto-review  # または multi-agent-tmux
-
-# 2. 変更を加える
-# ... 編集 ...
-
-# 3. サブモジュール内でコミット・プッシュ
-git add .
-git commit -m "変更内容の説明"
-git push origin main
-
-# 4. 親リポジトリに戻る
-cd ..
-
-# 5. 親リポジトリでサブモジュール参照を更新
-git add codex-auto-review  # または multi-agent-tmux
-git commit -m "Update codex-auto-review submodule"
-git push origin main
-```
-
-### ブランチ保護
-
-main ブランチへの直接プッシュを防ぐため、以下のワークフローを推奨：
-
-```bash
-# 1. ブランチを作成
-git checkout -b feature/your-feature
-
-# 2. 変更をコミット
-git add .
-git commit -m "変更内容"
-
-# 3. ブランチをプッシュ
-git push origin feature/your-feature
-
-# 4. プルリクエストを作成
-gh pr create --title "変更内容" --body "説明"
-```
-
-詳細は [README.md](README.md) を参照してください。
-
-## 評価ワークフロー
-
-### 基本的な流れ
-
-1. **マルチエージェントシステムの起動**
-   - codex-auto-review: GitHub Actions ワークフローを実行
-   - multi-agent-tmux: `./setup.sh` で tmux セッションを作成
-
-2. **タスクの実行**
-   - 評価シナリオに基づいてタスクを投入
-   - 各エージェントの動作を観察
-
-3. **成果物の保存**
-   - 生成物を `dist/outputs/` に保存
-   - ログを `dist/logs/` に保存
-
-4. **評価の実施**
-   - 成果物の品質を評価
-   - パフォーマンス測定
-   - 評価結果を `dist/evaluations/` に保存
-
-5. **レポート作成**
-   - 評価結果をまとめたレポートを作成
-   - 改善提案を含める
-
-## マルチエージェントシステムの使用判断
-
-### いつマルチエージェントを使うべきか？
-
-以下の条件を**すべて満たす**場合、multi-agent-tmuxシステムを使用すること：
-
-1. ✅ **タスクが複数に分割可能**
-   - 並行処理できる独立したサブタスクが3つ以上ある
-   - 各サブタスクの所要時間が5分以上
-
-2. ✅ **各サブタスクが専門性を持つ**
-   - 分析、実装、テスト、ドキュメント作成など
-   - 異なるスキルセットが必要
-
-3. ✅ **時間的制約がある**
-   - 単独作業より短時間で完了させたい
-   - 30分以上かかる作業
-
-### 詳細ガイド
-
-- **Claude Code**: [.claude/guides/commander.md](.claude/guides/commander.md)
-- **ワークフロー例**: [.claude/workflows/](.claude/workflows/)
-
----
-
-## すべてのAIが確認すべき観点
-
-すべてのAIアシスタント（Claude、Cursor、Codex等）は、以下の観点を確認してください：
-
-### 成果物の配置
-- すべての評価成果物は `dist/` ディレクトリに配置されているか
-- グローバルディレクトリに成果物が置かれていないか
-- タイムスタンプ付きのサブディレクトリが適切に使用されているか（例: `20250121-143022-task-name`）
-
-### サブモジュールの扱い
-- サブモジュール内の変更は、サブモジュール内でコミット・プッシュされているか
-- 親リポジトリでサブモジュール参照が適切に更新されているか
-- サブモジュールの変更と親リポジトリの変更が混在していないか
-
-### ブランチ保護
-- main ブランチへの直接プッシュが行われていないか
-- プルリクエスト経由での変更になっているか
-
-### 評価ドキュメント
-- 評価結果が適切にドキュメント化されているか
-- 評価項目が下記の「評価項目例」をカバーしているか
-- マルチエージェントシステムの動作ログが適切に保存されているか
-
-## 評価項目例
-
-### codex-auto-review の評価
-
-- レビューコメントの精度
-- P1/P2/P3 バッジの適切性
-- 応答時間
-- 見逃された問題の有無
-
-### multi-agent-tmux の評価
-
-- エージェント間の協調動作の効率性
-- タスク振り分けの適切性
-- メッセージ送受信の信頼性
-- 複数エージェントによる処理の高速化効果
-
-## プロジェクト構造
+## プロジェクト構造（主要ファイル）
 
 ```
 プロジェクトルート/
-├── PROJECT_CONTEXT.md           # このファイル（全AI共通）
-├── CLAUDE.md                    # Claude Code用設定
-├── AGENTS.md                    # Codex用設定
-├── .cursorrules                 # Cursor用設定
-├── .github/
-│   ├── hooks/                   # Git hooks
-│   │   └── pre-push             # main直接プッシュ防止
-│   └── workflows/               # GitHub Actions
-│       ├── branch-protection.yml    # ブランチ保護チェック
-│       └── codex-review.yml         # Codexレビュー（親リポジトリ用）
-├── .claude/                     # Claude固有の設定
-│   └── commands/                # スラッシュコマンド
-│       └── evaluate.md          # 評価ワークフロー
-├── dist/                        # 成果物保管場所
-│   ├── outputs/
-│   ├── evaluations/
-│   ├── logs/
-│   └── artifacts/
-├── codex-auto-review/           # サブモジュール1
-│   ├── AGENTS.md                # サブモジュール固有設定
-│   └── .github/workflows/       # サブモジュール用ワークフロー
-│       ├── pr-review.yml        # Codexレビュー依頼
-│       └── comment-reply.yml    # Codexコメント返信
-└── multi-agent-tmux/            # サブモジュール2
-    └── Claude.md                # ツール使用ガイド
+├── PROJECT_CONTEXT.md      # このファイル
+├── CLAUDE.md               # Claude Code設定
+├── AGENTS.md               # Codex設定
+├── .claude/
+│   ├── commands/           # スラッシュコマンド
+│   ├── context/            # ボス・エージェント用コンテキスト
+│   ├── guides/             # commander.md等
+│   ├── workflows/          # タスク別ワークフロー
+│   ├── hooks/              # セッションフック
+│   └── settings.json
+├── dist/                   # 成果物
+├── codex-auto-review/      # サブモジュール
+└── multi-agent-tmux/       # サブモジュール
+    ├── setup.sh
+    ├── send-message.sh
+    ├── orchestrate.sh
+    └── instructions/       # boss.md, agent.md
 ```
+
+## Git操作
+
+- **サブモジュール**: codex-auto-review、multi-agent-tmux
+- **ブランチ保護**: mainへの直接プッシュは避け、PR経由で変更
+
+**詳細**: [README.md](README.md)
+
+## トラブルシューティング
+
+| 問題 | 解決策 |
+|------|--------|
+| メッセージが送信されない | `tmux list-sessions`でセッション確認 |
+| エージェントが応答しない | 5秒以上待つ、またはペイン内容を手動確認 |
+| 完了フラグが残っている | `./clear-flags.sh`を実行 |
+| セッションが見つからない | `./setup.sh`で再作成 |
 
 ## リソース
 
-### 各システムのドキュメント
+### 必読ドキュメント
+- [multi-agent-tmux/Claude.md](multi-agent-tmux/Claude.md) - 使用ガイド
+- [.claude/guides/commander.md](.claude/guides/commander.md) - ボスの役割定義
+- [multi-agent-tmux/instructions/boss.md](multi-agent-tmux/instructions/boss.md) - ボス指示書
+- [multi-agent-tmux/instructions/agent.md](multi-agent-tmux/instructions/agent.md) - エージェント指示書
 
-- [codex-auto-review/AGENTS.md](codex-auto-review/AGENTS.md) - Codex レビューシステムの運用ガイド
-- [multi-agent-tmux/Claude.md](multi-agent-tmux/Claude.md) - Multi-agent tmux の使用ガイド
-- [multi-agent-tmux/docs/message-sending-design.md](multi-agent-tmux/docs/message-sending-design.md) - メッセージ送信の技術設計
+### 参考ドキュメント
+- [.claude/workflows/](.claude/workflows/) - ワークフロー定義
+- [dist/README.md](dist/README.md) - 成果物ディレクトリ詳細
+- [multi-agent-tmux/docs/](multi-agent-tmux/docs/) - 技術設計書
 
-### その他
+## 最近の変更点（2025年11月）
 
-- [README.md](README.md) - プロジェクト概要（人間向け）
-- [dist/README.md](dist/README.md) - 成果物ディレクトリの詳細
+- `PANE_INDEX`環境変数追加
+- `orchestrate.sh`実装（自動タスク振り分け）
+- 完了フラグ機構（`dist/tmp/`）
+- `.claude/context/`追加（ボス・エージェント用コンテキスト）
+- `.claude/hooks/`追加（セッションログ）
+- AI News Page作成
