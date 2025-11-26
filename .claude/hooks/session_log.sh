@@ -21,8 +21,13 @@ input=$(cat)
 # 全体をまとめた最終ログ保存（JSON Lines形式で追記）
 echo "[${timestamp}] $input" >> "$log_file"
 
-# ペイン番号を取得（tmux内の場合のみ）
-if [ -n "$TMUX" ]; then
+# ペイン番号を取得
+# 優先順位: PANE_INDEX環境変数 > tmux display-message
+# setup.shがPANE_INDEXを明示的に設定するので、それを優先する
+if [ -n "${PANE_INDEX:-}" ]; then
+  pane_index="$PANE_INDEX"
+elif [ -n "$TMUX" ]; then
+  # フォールバック: tmuxから取得（アクティブペインを返すので不正確な場合がある）
   pane_index=$(tmux display-message -p '#{pane_index}')
 else
   pane_index=""
@@ -91,18 +96,31 @@ required_files=(
 )
 
 if [ -d "$context_dir" ]; then
-  # tmuxセッション内の場合、ペイン番号で役割を自動判定
-  if [ -n "$TMUX" ]; then
+  # デバッグログ出力
+  echo "[${timestamp}] DEBUG: context_dir=$context_dir, TMUX=${TMUX:+set}, PANE_INDEX=${PANE_INDEX:-none}, pane_index=${pane_index:-none}, CLAUDE_ROLE=${CLAUDE_ROLE:-none}" >> "$log_file"
+
+  # CLAUDE_ROLE環境変数で役割を判定（setup.shで設定される）
+  if [ "$CLAUDE_ROLE" = "boss" ]; then
+    echo "[${timestamp}] DEBUG: Loading boss.md (CLAUDE_ROLE=boss)" >> "$log_file"
+    load_file "$context_dir/boss.md"
+  elif [ "$CLAUDE_ROLE" = "agent" ]; then
+    echo "[${timestamp}] DEBUG: Loading agent.md (CLAUDE_ROLE=agent, PANE_INDEX=$pane_index)" >> "$log_file"
+    export AGENT_NUMBER="$pane_index"
+    load_file "$context_dir/agent.md"
+  elif [ -n "$TMUX" ]; then
+    # CLAUDE_ROLE未設定だがtmux内の場合、ペイン番号でフォールバック
+    echo "[${timestamp}] DEBUG: CLAUDE_ROLE not set, falling back to pane_index='$pane_index'" >> "$log_file"
     if [ "$pane_index" = "0" ]; then
-      # ペイン0 = ボス
+      echo "[${timestamp}] DEBUG: Loading boss.md (pane_index=0, fallback)" >> "$log_file"
       load_file "$context_dir/boss.md"
     else
-      # ペイン1,2,3 = エージェント（番号付き）
+      echo "[${timestamp}] DEBUG: Loading agent.md (pane_index=$pane_index, fallback)" >> "$log_file"
       export AGENT_NUMBER="$pane_index"
       load_file "$context_dir/agent.md"
     fi
   else
     # 通常起動（tmux外）
+    echo "[${timestamp}] DEBUG: Outside TMUX, loading default.md" >> "$log_file"
     load_file "$context_dir/default.md"
     # 必読ファイルを自動出力
     load_files "必読ファイル自動読み込み" "${required_files[@]}"
