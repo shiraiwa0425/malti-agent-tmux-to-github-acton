@@ -11,8 +11,8 @@
 4. タスクを分割してエージェントに振り分け
 
 【コマンド例】
-./send-message.sh エージェント1 "タスク内容"
-./send-message.sh エージェント2 "タスク内容"
-./send-message.sh エージェント3 "タスク内容"
+./multi-agent-tmux/send-message.sh エージェント1 "タスク内容"
+./multi-agent-tmux/send-message.sh エージェント2 "タスク内容"
+./multi-agent-tmux/send-message.sh エージェント3 "タスク内容"
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
