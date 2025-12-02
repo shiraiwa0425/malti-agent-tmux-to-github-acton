@@ -6,6 +6,36 @@ Three.jsを使った3Dビジュアライゼーションページを作成する�
 
 **想定時間**: 各エージェント 15-30分
 
+## 推奨技術スタック（汎用・堅牢）
+
+あらゆるプロジェクトに対応できる、汎用性と堅牢性を重視した技術スタックを採用します。
+
+| カテゴリ | ライブラリ | 特徴・選定理由 |
+|---|---|---|
+| **Core** | **Next.js** | Reactフレームワークのデファクトスタンダード。 |
+| **3D** | **Three.js**<br>**@react-three/fiber**<br>**@react-three/drei** | React宣言的UIと親和性の高い3Dエコシステム。<br>コンポーネント単位で3Dオブジェクトを管理可能。 |
+| **UI** | **shadcn/ui** | **Radix UI** ベースのヘッドレスコンポーネント集。<br>npmパッケージではなくコードとして導入するため、カスタマイズ性が高くブラックボックス化しない。<br>アクセシビリティ（a11y）が標準で担保されている。 |
+| **Styling** | **Tailwind CSS** | ユーティリティファーストCSS。デザインの一貫性を保ちやすい。 |
+| **Animation** | **Framer Motion** | Reactにおける標準的なアニメーションライブラリ。<br>宣言的な記述で複雑なアニメーションを堅牢に実装可能。 |
+| **Font** | **Google Fonts**<br>(`next/font/google`) | パフォーマンス最適化されたフォント読み込み。 |
+| **Dev** | **Leva** | 3Dパラメータ調整用GUI。開発効率向上のため採用。 |
+
+## デザインシステム方針
+
+本ワークフローでは、特定のテイストに依存しない「ミニマルで機能的な」デザインシステムを初期状態として構築します。
+
+### 1. UIコンポーネント設計
+- **shadcn/ui** をベースとし、プロジェクト固有の変更は `components/ui` 配下のコードを直接編集することで行う。
+- **Atomic Design** 等の厳密な構成は強制しないが、`components/ui`（汎用）と `components/features`（機能特化）の分離を推奨。
+
+### 2. タイポグラフィ & カラー
+- **Font**: デフォルトは `Inter` (英数) + `Noto Sans JP` (和文) のような癖のないサンセリフ体を採用。
+- **Color**: Tailwindのデフォルトカラーパレットを使用し、セマンティックな命名（`primary`, `secondary`, `destructive` 等）で管理する。
+
+### 3. 3Dと2Dの融合
+- 3Dキャンバス（Canvas）は背景または独立したコンポーネントとして配置。
+- UIレイヤーはHTML/CSS（z-index上位）で実装し、3D空間内のテキスト描画は極力避ける（アクセシビリティと翻訳容易性のため）。
+
 ## タスク分割
 
 ### エージェント1: プロジェクトセットアップとデータモデル設計
@@ -23,6 +53,9 @@ dist/outputs/{timestamp}-three-js-visualization/
    - three, @types/three
    - @react-three/fiber, @react-three/drei
    - tailwindcss
+   - framer-motion
+   - leva
+   - shadcn/ui (npx shadcn@latest init)
 3. データモデルの型定義を作成 (types/index.ts)
 4. サンプルデータを作成 (data/sampleData.ts)
 5. プロジェクト構造とセットアップ手順をREADME.mdに記載
@@ -91,7 +124,9 @@ dist/outputs/{timestamp}-three-js-visualization/
    - 3Dグラフ表示エリア（エージェント2のコンポーネント使用）
    - サマリー表示
 3. UIデザイン:
-   - Tailwind CSSでモダンなデザイン
+   - shadcn/uiコンポーネントを使用（Button, Card, Dialog等）
+   - Framer Motionで滑らかなアニメーション（リスト表示、モーダル等）
+   - Tailwind CSSでモダンかつクリーンなデザイン
    - ダークモード対応
    - レスポンシブデザイン
 4. データ連携とstate管理
