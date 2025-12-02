@@ -88,11 +88,17 @@ echo ""
 # --- 3. 役割に応じたマークダウンファイルを読み込む ---
 context_dir="./.claude/context"
 
-# 必読ファイルリスト（通常起動時に読み込む）
-required_files=(
+# ボス用必読ファイルリスト
+boss_required_files=(
   "./PROJECT_CONTEXT.md"
   "./.claude/guides/commander.md"
   "./multi-agent-tmux/instructions/boss.md"
+)
+
+# エージェント用必読ファイルリスト
+agent_required_files=(
+  "./PROJECT_CONTEXT.md"
+  "./multi-agent-tmux/instructions/agent.md"
 )
 
 if [ -d "$context_dir" ]; then
@@ -101,29 +107,32 @@ if [ -d "$context_dir" ]; then
 
   # CLAUDE_ROLE環境変数で役割を判定（setup.shで設定される）
   if [ "$CLAUDE_ROLE" = "boss" ]; then
-    echo "[${timestamp}] DEBUG: Loading boss.md (CLAUDE_ROLE=boss)" >> "$log_file"
+    echo "[${timestamp}] DEBUG: Loading boss files (CLAUDE_ROLE=boss)" >> "$log_file"
     load_file "$context_dir/boss.md"
+    load_files "ボス必読ファイル" "${boss_required_files[@]}"
   elif [ "$CLAUDE_ROLE" = "agent" ]; then
-    echo "[${timestamp}] DEBUG: Loading agent.md (CLAUDE_ROLE=agent, PANE_INDEX=$pane_index)" >> "$log_file"
+    echo "[${timestamp}] DEBUG: Loading agent files (CLAUDE_ROLE=agent, PANE_INDEX=$pane_index)" >> "$log_file"
     export AGENT_NUMBER="$pane_index"
     load_file "$context_dir/agent.md"
+    load_files "エージェント必読ファイル" "${agent_required_files[@]}"
   elif [ -n "$TMUX" ]; then
     # CLAUDE_ROLE未設定だがtmux内の場合、ペイン番号でフォールバック
     echo "[${timestamp}] DEBUG: CLAUDE_ROLE not set, falling back to pane_index='$pane_index'" >> "$log_file"
     if [ "$pane_index" = "0" ]; then
-      echo "[${timestamp}] DEBUG: Loading boss.md (pane_index=0, fallback)" >> "$log_file"
+      echo "[${timestamp}] DEBUG: Loading boss files (pane_index=0, fallback)" >> "$log_file"
       load_file "$context_dir/boss.md"
+      load_files "ボス必読ファイル" "${boss_required_files[@]}"
     else
-      echo "[${timestamp}] DEBUG: Loading agent.md (pane_index=$pane_index, fallback)" >> "$log_file"
+      echo "[${timestamp}] DEBUG: Loading agent files (pane_index=$pane_index, fallback)" >> "$log_file"
       export AGENT_NUMBER="$pane_index"
       load_file "$context_dir/agent.md"
+      load_files "エージェント必読ファイル" "${agent_required_files[@]}"
     fi
   else
-    # 通常起動（tmux外）
-    echo "[${timestamp}] DEBUG: Outside TMUX, loading default.md" >> "$log_file"
+    # 通常起動（tmux外）- ボスとして扱う
+    echo "[${timestamp}] DEBUG: Outside TMUX, loading as boss" >> "$log_file"
     load_file "$context_dir/default.md"
-    # 必読ファイルを自動出力
-    load_files "必読ファイル自動読み込み" "${required_files[@]}"
+    load_files "ボス必読ファイル" "${boss_required_files[@]}"
   fi
 fi
 
