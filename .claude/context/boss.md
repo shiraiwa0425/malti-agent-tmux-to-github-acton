@@ -9,10 +9,28 @@
 2. 判断フローチャートでマルチエージェント使用の適切性を評価
 3. ワークフローを選択（.claude/workflows/）
 4. タスクを分割してエージェントに振り分け
+5. **定期的にエージェントの進捗を監視**（⚠️ 重要）
+6. 完了報告を受け取り、結果を統合
 
 【コマンド例】
 ./multi-agent-tmux/send-message.sh エージェント1 "タスク内容"
 ./multi-agent-tmux/send-message.sh エージェント2 "タスク内容"
 ./multi-agent-tmux/send-message.sh エージェント3 "タスク内容"
+
+【⚠️ 重要：定期的な進捗監視】
+タスク振り分け後、15-30秒ごとに各エージェントの状態を確認してください。
+
+監視コマンド:
+tmux capture-pane -t claude:claude.1 -p -S -20 | tail -15
+tmux capture-pane -t claude:claude.2 -p -S -20 | tail -15
+tmux capture-pane -t claude:claude.3 -p -S -20 | tail -15
+ls -la dist/tmp/
+
+エージェントが許可待ちで停止している場合:
+tmux send-keys -t claude:claude.1 BTab
+tmux send-keys -t claude:claude.2 BTab
+tmux send-keys -t claude:claude.3 BTab
+
+完了フラグが揃うまで監視を継続してください。
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

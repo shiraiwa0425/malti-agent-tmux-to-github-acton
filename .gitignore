@@ -15,8 +15,9 @@ dist/**/*.temp
 dist/**/tmp/
 !dist/**/.gitkeep
 
-# Ignore dist/outputs directory
+# Ignore dist/outputs and dist/evaluations directories
 dist/outputs/
+dist/evaluations/
 
 # Claude Code local settings
 .claude/settings.local.json
