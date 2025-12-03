@@ -91,6 +91,7 @@ context_dir="./.claude/context"
 # ボス用必読ファイルリスト
 boss_required_files=(
   "./PROJECT_CONTEXT.md"
+  "./.claude/guides/architecture.md"
   "./.claude/guides/commander.md"
   "./multi-agent-tmux/instructions/boss.md"
 )
@@ -98,6 +99,7 @@ boss_required_files=(
 # エージェント用必読ファイルリスト
 agent_required_files=(
   "./PROJECT_CONTEXT.md"
+  "./.claude/guides/architecture.md"
   "./multi-agent-tmux/instructions/agent.md"
 )
 

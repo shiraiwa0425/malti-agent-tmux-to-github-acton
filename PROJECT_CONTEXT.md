@@ -91,6 +91,25 @@ dist/
 - レストラン経費アプリ
 - 松葉蟹メニューシステム
 
+## 技術スタック
+
+**[.claude/guides/architecture.md](.claude/guides/architecture.md) を参照してください。**
+
+| カテゴリ | 技術 |
+|----------|------|
+| **JavaScript ランタイム** | **Bun**（Node.jsではなくBunを使用） |
+| フレームワーク | Next.js 14+ (App Router) |
+| 言語 | TypeScript |
+| スタイリング | Tailwind CSS |
+
+### Bunコマンド例
+```bash
+bun install          # パッケージインストール
+bun run dev          # 開発サーバー起動
+bun run build        # ビルド
+bunx create-next-app # Next.jsプロジェクト作成
+```
+
 ## マルチエージェントの使用判断
 
 **[.claude/guides/commander.md](.claude/guides/commander.md) の判断フローチャートを参照してください。**
