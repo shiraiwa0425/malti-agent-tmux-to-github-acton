@@ -36,6 +36,14 @@
 - 各システムの性能とタスク処理能力の測定
 - 実際のWebアプリケーション開発を通じた評価
 
+## 必読ファイル（作業開始前に確認）
+
+- PROJECT_CONTEXT.md（このファイル）
+- AGENTS.md（Codex設定・レビュー指針）
+- multi-agent-tmux/instructions/boss.md（ボス指示書）
+- multi-agent-tmux/instructions/agent.md（エージェント指示書）
+- multi-agent-tmux/README.md, multi-agent-tmux/Claude.md（tmux操作と運用ガイド）
+
 ## 評価対象システム
 
 ### 1. codex-auto-review

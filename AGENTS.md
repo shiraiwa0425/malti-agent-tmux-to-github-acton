@@ -5,6 +5,7 @@
 **このプロジェクトの詳細は [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) を参照してください。**
 
 すべての AI が確認すべき観点は、[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) の「すべての AI が確認すべき観点」セクションを参照してください。
+作業開始前に、PROJECT_CONTEXT.md の「必読ファイル」セクションも必ず確認してください。
 
 ## あなたの役割
 
