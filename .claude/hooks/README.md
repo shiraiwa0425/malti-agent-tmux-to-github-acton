@@ -13,7 +13,7 @@
 ### 1. session_log.sh（メインスクリプト）
 
 セッション開始時（startup）に自動実行されるスクリプトです。
-`CLAUDE_ROLE`環境変数を見て、ボス/エージェントで異なるコンテキストを出力します。
+`AGENT_ROLE`環境変数を見て、ボス/エージェントで異なるコンテキストを出力します。
 
 **主な機能**:
 
@@ -23,8 +23,8 @@
 4. **コンテキスト出力** - `.claude/context/`配下のマークダウンを出力
 
 **環境変数による分岐**:
-- `CLAUDE_ROLE=boss` → ボス用コンテキスト（`context/boss.md`）
-- `CLAUDE_ROLE=agent` → エージェント用コンテキスト（`context/agent.md`）
+- `AGENT_ROLE=boss` → ボス用コンテキスト（`context/boss.md`）
+- `AGENT_ROLE=agent` → エージェント用コンテキスト（`context/agent.md`）
 - 未設定 → デフォルトコンテキスト（`context/default.md`）
 
 ### 2. ログファイル
@@ -41,7 +41,7 @@
 ```
 # session_log.jsonl
 [20251125-230000] {"type":"SessionStart","trigger":"startup",...}
-[20251125-230000] Session started - CLAUDE_ROLE=boss, PWD=/path/to/project
+[20251125-230000] Session started - AGENT_ROLE=boss, PWD=/path/to/project
 
 # error.log（エラー発生時のみ）
 [20251125-230000] ERROR: Script failed at line 25: cat "$context_dir/boss.md"
@@ -60,7 +60,7 @@
 ```
 
 - `00-`で始まるファイルは全員に表示されます
-- `CLAUDE_ROLE`に応じて対応するファイルが追加で表示されます
+- `AGENT_ROLE`に応じて対応するファイルが追加で表示されます
 
 ### 4. settings.json設定
 
@@ -90,10 +90,10 @@
 
 ```bash
 # ペイン0（ボス）
-CLAUDE_ROLE=boss claude
+AGENT_ROLE=boss claude
 
 # ペイン1,2,3（エージェント）
-CLAUDE_ROLE=agent claude
+AGENT_ROLE=agent claude
 ```
 
 ## テスト方法
@@ -102,10 +102,10 @@ CLAUDE_ROLE=agent claude
 
 ```bash
 # ボスとして（入力をシミュレート）
-echo '{"type":"SessionStart"}' | CLAUDE_ROLE=boss ./.claude/hooks/session_log.sh
+echo '{"type":"SessionStart"}' | AGENT_ROLE=boss ./.claude/hooks/session_log.sh
 
 # エージェントとして
-echo '{"type":"SessionStart"}' | CLAUDE_ROLE=agent ./.claude/hooks/session_log.sh
+echo '{"type":"SessionStart"}' | AGENT_ROLE=agent ./.claude/hooks/session_log.sh
 
 # 通常起動
 echo '{"type":"SessionStart"}' | ./.claude/hooks/session_log.sh
@@ -150,7 +150,7 @@ cat .claude/hooks/logs/error.log
 ### 環境変数が反映されない
 
 - setup.shが正しく環境変数を設定しているか確認
-- tmuxペイン内で`echo $CLAUDE_ROLE`を実行して確認
+- tmuxペイン内で`echo $AGENT_ROLE`を実行して確認
 
 ### スクリプトの構文エラー
 
@@ -164,7 +164,7 @@ bash -n .claude/hooks/session_log.sh
 ```
 .claude/hooks/
 ├── README.md          # このファイル
-├── session_log.sh     # メイン初期化スクリプト（CLAUDE_ROLEで分岐）
+├── session_log.sh     # メイン初期化スクリプト（AGENT_ROLEで分岐）
 └── logs/              # ログディレクトリ（自動作成）
     ├── session_log.jsonl  # セッションログ
     └── error.log          # エラーログ

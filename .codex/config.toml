@@ -1,0 +1,2 @@
+# より緩い制限
+sandbox_mode = "workspace-write"

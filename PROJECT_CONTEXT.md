@@ -36,6 +36,14 @@
 - 各システムの性能とタスク処理能力の測定
 - 実際のWebアプリケーション開発を通じた評価
 
+## 必読ファイル（作業開始前に確認）
+
+- PROJECT_CONTEXT.md（このファイル）
+- AGENTS.md（Codex設定・レビュー指針）
+- multi-agent-tmux/instructions/boss.md（ボス指示書）
+- multi-agent-tmux/instructions/agent.md（エージェント指示書）
+- multi-agent-tmux/README.md, multi-agent-tmux/Claude.md（tmux操作と運用ガイド）
+
 ## 評価対象システム
 
 ### 1. codex-auto-review
@@ -64,7 +72,7 @@ tmux上で複数のClaude Codeエージェントを協調動作させるシス�
 | `orchestrate.sh` | 自動タスク振り分け |
 | `clear-flags.sh` | 完了フラグクリア |
 
-**環境変数**: `CLAUDE_ROLE`（boss/agent）、`PANE_INDEX`（0-3）
+**環境変数**: `AGENT_ROLE`（boss/agent）、`PANE_INDEX`（0-3）、`AI_SESSION`（claude/codex）
 
 ## 成果物
 
