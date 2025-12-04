@@ -24,7 +24,7 @@
 以下のファイルをReadツールで読み込んでください：
 
 1. PROJECT_CONTEXT.md - プロジェクト全体の目的・構造（成果物配置ルール）
-2. multi-agent-tmux/instructions/agent.md - エージェントの役割と完了報告方法
+2. docs/instructions/agent.md - エージェントの役割と完了報告方法
 
 【あなたの役割】
 - ボスからの指示を受けてタスクを実行
@@ -35,7 +35,7 @@
 2. 完了フラグ作成（自分の番号を使用）:
    mkdir -p ./dist/tmp && touch ./dist/tmp/エージェント${PANE_INDEX}_done.txt
 3. ボスに個別報告（各エージェントが必ず実行）:
-   ./multi-agent-tmux/send-message.sh ボス "エージェント${PANE_INDEX}完了"
+   ./multi-agent-tmux/send-message.sh ボス "エージェント${PANE_INDEX}完了：[作業内容の要約]"
 
 【重要】全員完了の確認はボスが行います。各エージェントは自分のタスク完了後、必ず個別にボスへ報告してください。
 
@@ -45,5 +45,7 @@
 
 【準備完了】
 上記ファイルを読み込んだ後、ボスからの指示を待機してください。
+
+**詳細は [docs/instructions/agent.md](../../docs/instructions/agent.md) を参照**
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -93,14 +93,14 @@ boss_required_files=(
   "./PROJECT_CONTEXT.md"
   "./.claude/guides/architecture.md"
   "./.claude/guides/commander.md"
-  "./multi-agent-tmux/instructions/boss.md"
+  "./docs/instructions/boss.md"
 )
 
 # エージェント用必読ファイルリスト
 agent_required_files=(
   "./PROJECT_CONTEXT.md"
   "./.claude/guides/architecture.md"
-  "./multi-agent-tmux/instructions/agent.md"
+  "./docs/instructions/agent.md"
 )
 
 if [ -d "$context_dir" ]; then
