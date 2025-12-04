@@ -105,21 +105,22 @@ agent_required_files=(
 
 if [ -d "$context_dir" ]; then
   # デバッグログ出力
-  echo "[${timestamp}] DEBUG: context_dir=$context_dir, TMUX=${TMUX:+set}, PANE_INDEX=${PANE_INDEX:-none}, pane_index=${pane_index:-none}, CLAUDE_ROLE=${CLAUDE_ROLE:-none}" >> "$log_file"
+  role="${AGENT_ROLE:-none}"
+  echo "[${timestamp}] DEBUG: context_dir=$context_dir, TMUX=${TMUX:+set}, PANE_INDEX=${PANE_INDEX:-none}, pane_index=${pane_index:-none}, AGENT_ROLE=${role}" >> "$log_file"
 
-  # CLAUDE_ROLE環境変数で役割を判定（setup.shで設定される）
-  if [ "$CLAUDE_ROLE" = "boss" ]; then
-    echo "[${timestamp}] DEBUG: Loading boss files (CLAUDE_ROLE=boss)" >> "$log_file"
+  # AGENT_ROLE環境変数で役割を判定（setup.shで設定される）
+  if [ "$role" = "boss" ]; then
+    echo "[${timestamp}] DEBUG: Loading boss files (AGENT_ROLE=boss)" >> "$log_file"
     load_file "$context_dir/boss.md"
     load_files "ボス必読ファイル" "${boss_required_files[@]}"
-  elif [ "$CLAUDE_ROLE" = "agent" ]; then
-    echo "[${timestamp}] DEBUG: Loading agent files (CLAUDE_ROLE=agent, PANE_INDEX=$pane_index)" >> "$log_file"
+  elif [ "$role" = "agent" ]; then
+    echo "[${timestamp}] DEBUG: Loading agent files (AGENT_ROLE=agent, PANE_INDEX=$pane_index)" >> "$log_file"
     export AGENT_NUMBER="$pane_index"
     load_file "$context_dir/agent.md"
     load_files "エージェント必読ファイル" "${agent_required_files[@]}"
   elif [ -n "$TMUX" ]; then
-    # CLAUDE_ROLE未設定だがtmux内の場合、ペイン番号でフォールバック
-    echo "[${timestamp}] DEBUG: CLAUDE_ROLE not set, falling back to pane_index='$pane_index'" >> "$log_file"
+    # AGENT_ROLE未設定だがtmux内の場合、ペイン番号でフォールバック
+    echo "[${timestamp}] DEBUG: AGENT_ROLE not set, falling back to pane_index='$pane_index'" >> "$log_file"
     if [ "$pane_index" = "0" ]; then
       echo "[${timestamp}] DEBUG: Loading boss files (pane_index=0, fallback)" >> "$log_file"
       load_file "$context_dir/boss.md"

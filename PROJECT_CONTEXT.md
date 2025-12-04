@@ -64,7 +64,7 @@ tmux上で複数のClaude Codeエージェントを協調動作させるシス�
 | `orchestrate.sh` | 自動タスク振り分け |
 | `clear-flags.sh` | 完了フラグクリア |
 
-**環境変数**: `CLAUDE_ROLE`（boss/agent）、`PANE_INDEX`（0-3）
+**環境変数**: `AGENT_ROLE`（boss/agent）、`PANE_INDEX`（0-3）、`AI_SESSION`（claude/codex）
 
 ## 成果物
 
