@@ -1,6 +1,0 @@
-[submodule "codex-auto-review"]
-	path = codex-auto-review
-	url = https://github.com/shiraiwa0425/codex-auto-review.git
-[submodule "multi-agent-tmux"]
-	path = multi-agent-tmux
-	url = https://github.com/shiraiwa0425/multi-agent-tmux.git

@@ -1,0 +1,40 @@
+name: Comment Reply Automation
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+on:
+  issue_comment:
+    types: [created, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+
+jobs:
+  reply-to-badge-comments:
+    runs-on: ubuntu-latest
+    # PAT_TOKENがない場合（フォークPRなど）はステップをスキップ
+    env:
+      PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+    steps:
+      - name: PAT_TOKEN未設定の警告
+        if: env.PAT_TOKEN == ''
+        run: |
+          echo "::warning::PAT_TOKEN が設定されていないため、Badge返信はスキップされました。secrets.PAT_TOKEN を設定してください。"
+
+      - name: Checkout repository
+        if: env.PAT_TOKEN != ''
+        uses: actions/checkout@v4
+
+      - name: Badge付きコメントに返信 (config-driven)
+        if: env.PAT_TOKEN != ''
+        uses: actions/github-script@v7
+        with:
+          # Personal Access Tokenを使用してCodexをトリガー
+          # GITHUB_TOKENではCodexが反応しないため、PATが必要
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            const script = require('./.github/scripts/reply-to-badge-comment.js');
+            await script({ github, context });
