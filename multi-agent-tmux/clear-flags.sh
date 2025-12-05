@@ -11,8 +11,7 @@ SESSION_DIR="$TMP_DIR/${AI_SESSION:-claude}"
 echo "完了フラグをクリアします...(session: ${AI_SESSION:-claude})"
 mkdir -p "$SESSION_DIR"
 
-# 旧パスに残ったフラグも掃除しつつ、セッション別ディレクトリをクリア
-rm -f "$TMP_DIR"/*.txt 2>/dev/null
+# セッション別ディレクトリのみクリア（他セッションに影響しない）
 rm -f "$SESSION_DIR"/*.txt 2>/dev/null
 echo "クリア完了"
 
