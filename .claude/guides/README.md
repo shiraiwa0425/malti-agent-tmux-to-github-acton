@@ -65,7 +65,7 @@
 
 ### multi-agent-tmux
 
-- [multi-agent-tmux/Claude.md](../../multi-agent-tmux/Claude.md) - システムの基本操作
+- [multi-agent-tmux/USAGE.md](../../multi-agent-tmux/USAGE.md) - システムの基本操作
 - [multi-agent-tmux/orchestrate.sh](../../multi-agent-tmux/orchestrate.sh) - 自動化スクリプト
 
 ### ワークフロー

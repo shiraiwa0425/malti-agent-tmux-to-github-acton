@@ -98,5 +98,5 @@ Three.jsを使った3D可視化ページの作成ワークフロー
 ## 参考リソース
 
 - [commander.md](../guides/commander.md) - マルチエージェント使用判断ガイド
-- [multi-agent-tmux/Claude.md](../../multi-agent-tmux/Claude.md) - システム操作ガイド
+- [multi-agent-tmux/USAGE.md](../../multi-agent-tmux/USAGE.md) - システム操作ガイド
 - [PROJECT_CONTEXT.md](../../PROJECT_CONTEXT.md) - プロジェクト全体の情報

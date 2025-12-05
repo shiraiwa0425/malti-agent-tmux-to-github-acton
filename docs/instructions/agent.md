@@ -87,10 +87,10 @@ dist/
 └── tmp/          # 完了フラグ（一時ファイル）
 ```
 
-## デュアルセッション運用時の注意
+## マルチセッション運用時の注意
 
-Claude と Codex の両方が稼働している場合：
+複数のAIセッション（Claude / Codex / Gemini）が稼働している場合：
 
-- `AI_SESSION` 環境変数でセッションを識別（`claude` または `codex`）
-- 完了フラグはセッション別ディレクトリに作成（例: `dist/tmp/claude/` と `dist/tmp/codex/`）
+- `AI_SESSION` 環境変数でセッションを識別（`claude` / `codex` / `gemini`）
+- 完了フラグはセッション別ディレクトリに作成（例: `dist/tmp/claude/`、`dist/tmp/codex/`、`dist/tmp/gemini/`）
 - ボスへの報告は自分のセッション内のボスに対して行う
