@@ -22,6 +22,11 @@ jobs:
       PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 
     steps:
+      - name: PAT_TOKEN未設定の警告
+        if: env.PAT_TOKEN == ''
+        run: |
+          echo "::warning::PAT_TOKEN が設定されていないため、Codexレビュー依頼はスキップされました。secrets.PAT_TOKEN を設定してください。"
+
       - name: Checkout repository
         if: env.PAT_TOKEN != ''
         uses: actions/checkout@v4
