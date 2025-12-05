@@ -42,7 +42,7 @@
 - CLAUDE.md / AGENTS.md（Claude/Codex固有設定）
 - docs/instructions/boss.md（ボス指示書 - Claude/Codex共通）
 - docs/instructions/agent.md（エージェント指示書 - Claude/Codex共通）
-- multi-agent-tmux/README.md, multi-agent-tmux/Claude.md（tmux操作と運用ガイド）
+- multi-agent-tmux/README.md, multi-agent-tmux/USAGE.md（tmux操作と運用ガイド）
 
 ## 評価対象システム
 
@@ -178,7 +178,7 @@ bunx create-next-app # Next.jsプロジェクト作成
 ## リソース
 
 ### 必読ドキュメント
-- [multi-agent-tmux/Claude.md](multi-agent-tmux/Claude.md) - 使用ガイド
+- [multi-agent-tmux/USAGE.md](multi-agent-tmux/USAGE.md) - 使用ガイド
 - [.claude/guides/commander.md](.claude/guides/commander.md) - ボスの役割定義
 - [docs/instructions/boss.md](docs/instructions/boss.md) - ボス指示書（Claude/Codex共通）
 - [docs/instructions/agent.md](docs/instructions/agent.md) - エージェント指示書（Claude/Codex共通）
