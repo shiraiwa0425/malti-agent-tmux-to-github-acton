@@ -17,12 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     # フォークPRではSecretsが利用できないため、内部PRのみ実行
     if: github.event.pull_request.head.repo.full_name == github.repository
+    # PAT_TOKENがない場合はステップをスキップ
+    env:
+      PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 
     steps:
       - name: Checkout repository
+        if: env.PAT_TOKEN != ''
         uses: actions/checkout@v4
 
       - name: Codexにレビュー依頼 (config-driven)
+        if: env.PAT_TOKEN != ''
         uses: actions/github-script@v7
         with:
           # Personal Access Tokenを使用してCodexをトリガー
