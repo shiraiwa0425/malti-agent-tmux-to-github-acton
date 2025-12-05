@@ -52,9 +52,9 @@ GitHub Actions + Codex による自動コードレビューシステム
 **詳細**: [codex-auto-review/AGENTS.md](codex-auto-review/AGENTS.md)
 
 ### 2. multi-agent-tmux
-tmux上で複数のClaude Codeエージェントを協調動作させるシステム
+tmux上で複数のAIエージェント（Claude/Codex/Gemini）を協調動作させるシステム
 
-**詳細**: [multi-agent-tmux/Claude.md](multi-agent-tmux/Claude.md)
+**詳細**: [multi-agent-tmux/USAGE.md](multi-agent-tmux/USAGE.md)
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -63,6 +63,8 @@ tmux上で複数のClaude Codeエージェントを協調動作させるシス�
 │  ペイン0  │  ペイン1  │  ペイン2  │  ペイン3  │
 │   ボス   │エージェント1│エージェント2│エージェント3│
 └──────────┴──────────┴──────────┴──────────┘
+
+同様にcodex、geminiセッションも作成可能
 ```
 
 | スクリプト | 機能 |
@@ -72,7 +74,7 @@ tmux上で複数のClaude Codeエージェントを協調動作させるシス�
 | `orchestrate.sh` | 自動タスク振り分け |
 | `clear-flags.sh` | 完了フラグクリア |
 
-**環境変数**: `AGENT_ROLE`（boss/agent）、`PANE_INDEX`（0-3）、`AI_SESSION`（claude/codex）
+**環境変数**: `AGENT_ROLE`（boss/agent）、`PANE_INDEX`（0-3）、`AI_SESSION`（claude/codex/gemini）
 
 ## 成果物
 

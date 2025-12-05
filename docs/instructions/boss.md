@@ -25,7 +25,7 @@
 
 ```bash
 # 各エージェントの状態確認（15-30秒ごとに実行）
-# AI_SESSION環境変数でセッション名を切り替え（claude または codex）
+# AI_SESSION環境変数でセッション名を切り替え（claude / codex / gemini）
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.1 -p -S -20 | tail -15
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.2 -p -S -20 | tail -15
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 -p -S -20 | tail -15
@@ -83,9 +83,9 @@ tmux send-keys -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 BTab
 - 全エージェントの完了フラグ（`dist/tmp/<AI_SESSION>/エージェント*_done.txt`）を確認
 - 全員完了後、結果を統合してユーザーに報告
 
-## デュアルセッション運用（Claude + Codex）
+## マルチセッション運用（Claude + Codex + Gemini）
 
-8体のエージェントを同時運用する場合：
+最大12体のエージェントを同時運用する場合：
 
 | セッション | ペイン | 役割 |
 |-----------|--------|------|
@@ -93,6 +93,8 @@ tmux send-keys -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 BTab
 | claude | 1-3 | Claudeエージェント1-3 |
 | codex | 0 | Codexボス |
 | codex | 1-3 | Codexエージェント1-3 |
+| gemini | 0 | Geminiボス |
+| gemini | 1-3 | Geminiエージェント1-3 |
 
 ### セッション間の連携
 
@@ -102,4 +104,7 @@ tmux send-keys -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 BTab
 ```bash
 # Codexセッションのエージェントに送信
 AI_SESSION=codex ./multi-agent-tmux/send-message.sh エージェント1 "タスク内容"
+
+# Geminiセッションのエージェントに送信
+AI_SESSION=gemini ./multi-agent-tmux/send-message.sh エージェント1 "タスク内容"
 ```
