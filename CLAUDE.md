@@ -10,8 +10,10 @@
 
 | 役割 | 指示書 |
 |------|--------|
-| ボス（boss1） | [multi-agent-tmux/instructions/boss.md](multi-agent-tmux/instructions/boss.md) |
-| エージェント（agent1/2/3） | [multi-agent-tmux/instructions/agent.md](multi-agent-tmux/instructions/agent.md) |
+| ボス（boss） | [docs/instructions/boss.md](docs/instructions/boss.md) |
+| エージェント（agent1/2/3） | [docs/instructions/agent.md](docs/instructions/agent.md) |
+
+> 指示書はClaude/Codex共通です。
 
 ## スラッシュコマンド
 

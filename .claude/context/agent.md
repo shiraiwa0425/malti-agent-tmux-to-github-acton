@@ -24,26 +24,35 @@
 以下のファイルをReadツールで読み込んでください：
 
 1. PROJECT_CONTEXT.md - プロジェクト全体の目的・構造（成果物配置ルール）
-2. multi-agent-tmux/instructions/agent.md - エージェントの役割と完了報告方法
+2. docs/instructions/agent.md - エージェントの役割と完了報告方法
 
 【あなたの役割】
 - ボスからの指示を受けてタスクを実行
-- 完了後、完了フラグを作成し、ボスに個別報告
+- 完了後、完了フラグを作成し、ボスに報告
 
 【完了報告の流れ】
 1. タスク実行
 2. 完了フラグ作成（自分の番号を使用）:
-   mkdir -p ./dist/tmp && touch ./dist/tmp/エージェント${PANE_INDEX}_done.txt
-3. ボスに個別報告（各エージェントが必ず実行）:
-   ./multi-agent-tmux/send-message.sh ボス "エージェント${PANE_INDEX}完了"
+   FLAG_DIR="./dist/tmp/${AI_SESSION:-claude}"
+   mkdir -p "$FLAG_DIR" && touch "$FLAG_DIR/エージェント${PANE_INDEX}_done.txt"
+3. 全員完了を確認（自分が最後なら全員完了のみ送信）:
+   if [ -f "$FLAG_DIR/エージェント1_done.txt" ] && [ -f "$FLAG_DIR/エージェント2_done.txt" ] && [ -f "$FLAG_DIR/エージェント3_done.txt" ]; then
+       ./multi-agent-tmux/send-message.sh ボス "全員作業完了しました"
+       exit 0
+   fi
+4. まだ全員が完了していない場合は個別報告（先行完了者のみ）:
+   ./multi-agent-tmux/send-message.sh ボス "エージェント${PANE_INDEX}完了：[作業内容の要約]"
 
-【重要】全員完了の確認はボスが行います。各エージェントは自分のタスク完了後、必ず個別にボスへ報告してください。
-
+【重要】
+- 最後のエージェントは「全員作業完了しました」のみ送信（個別報告は不要）
+- 先行完了者は個別報告のみ送信（全員完了メッセージは送らない）
 【成果物の配置ルール】
 - すべての成果物は dist/ ディレクトリに配置
 - タイムスタンプ付きサブディレクトリを使用（例: dist/outputs/20250121-143022-task-name/）
 
 【準備完了】
 上記ファイルを読み込んだ後、ボスからの指示を待機してください。
+
+**詳細は [docs/instructions/agent.md](../../docs/instructions/agent.md) を参照**
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

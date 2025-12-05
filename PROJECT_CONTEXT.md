@@ -39,9 +39,9 @@
 ## 必読ファイル（作業開始前に確認）
 
 - PROJECT_CONTEXT.md（このファイル）
-- AGENTS.md（Codex設定・レビュー指針）
-- multi-agent-tmux/instructions/boss.md（ボス指示書）
-- multi-agent-tmux/instructions/agent.md（エージェント指示書）
+- CLAUDE.md / AGENTS.md（Claude/Codex固有設定）
+- docs/instructions/boss.md（ボス指示書 - Claude/Codex共通）
+- docs/instructions/agent.md（エージェント指示書 - Claude/Codex共通）
 - multi-agent-tmux/README.md, multi-agent-tmux/Claude.md（tmux操作と運用ガイド）
 
 ## 評価対象システム
@@ -178,8 +178,8 @@ bunx create-next-app # Next.jsプロジェクト作成
 ### 必読ドキュメント
 - [multi-agent-tmux/Claude.md](multi-agent-tmux/Claude.md) - 使用ガイド
 - [.claude/guides/commander.md](.claude/guides/commander.md) - ボスの役割定義
-- [multi-agent-tmux/instructions/boss.md](multi-agent-tmux/instructions/boss.md) - ボス指示書
-- [multi-agent-tmux/instructions/agent.md](multi-agent-tmux/instructions/agent.md) - エージェント指示書
+- [docs/instructions/boss.md](docs/instructions/boss.md) - ボス指示書（Claude/Codex共通）
+- [docs/instructions/agent.md](docs/instructions/agent.md) - エージェント指示書（Claude/Codex共通）
 
 ### 参考ドキュメント
 - [.claude/workflows/](.claude/workflows/) - ワークフロー定義
