@@ -43,17 +43,18 @@ echo $PANE_INDEX
 # 作業内容を実行
 echo "タスク実行中..."
 
-# 完了フラグ用のディレクトリを用意
-mkdir -p ./dist/tmp
+# 完了フラグ用のディレクトリを用意（セッションごとに分離）
+FLAG_DIR="./dist/tmp/${AI_SESSION:-claude}"
+mkdir -p "$FLAG_DIR"
 
 # 自分の完了ファイル作成
 # ⚠️ 重要: PANE_INDEX環境変数が未設定なら即エラーにして誤記録を防止
 : "${PANE_INDEX:?PANE_INDEX not set}"
 # PANE_INDEXで自分のエージェント番号を使用し、自身の完了ファイルを作成
-touch ./dist/tmp/エージェント${PANE_INDEX}_done.txt
+touch "${FLAG_DIR}/エージェント${PANE_INDEX}_done.txt"
 
 # 全員の完了確認
-if [ -f ./dist/tmp/エージェント1_done.txt ] && [ -f ./dist/tmp/エージェント2_done.txt ] && [ -f ./dist/tmp/エージェント3_done.txt ]; then
+if [ -f "${FLAG_DIR}/エージェント1_done.txt" ] && [ -f "${FLAG_DIR}/エージェント2_done.txt" ] && [ -f "${FLAG_DIR}/エージェント3_done.txt" ]; then
     echo "全員の作業完了を確認（最後の完了者として報告）"
     ./multi-agent-tmux/send-message.sh ボス "全員作業完了しました"
 else
@@ -91,5 +92,5 @@ dist/
 Claude と Codex の両方が稼働している場合：
 
 - `AI_SESSION` 環境変数でセッションを識別（`claude` または `codex`）
-- 完了フラグは共通の `dist/tmp/` に作成
+- 完了フラグはセッション別ディレクトリに作成（例: `dist/tmp/claude/` と `dist/tmp/codex/`）
 - ボスへの報告は自分のセッション内のボスに対して行う

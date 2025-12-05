@@ -24,7 +24,7 @@
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.1 -p -S -20 | tail -15
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.2 -p -S -20 | tail -15
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 -p -S -20 | tail -15
-ls -la dist/tmp/
+ls -la dist/tmp/${AI_SESSION:-claude}/
 
 エージェントが許可待ちで停止している場合:
 tmux send-keys -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.1 BTab

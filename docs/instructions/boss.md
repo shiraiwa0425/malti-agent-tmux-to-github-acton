@@ -31,7 +31,7 @@ tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.2 -p -S -20 | t
 tmux capture-pane -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 -p -S -20 | tail -15
 
 # 完了フラグの確認
-ls -la dist/tmp/
+ls -la dist/tmp/${AI_SESSION:-claude}/
 ```
 
 ### 停止検知時のアクション
@@ -80,7 +80,7 @@ tmux send-keys -t ${AI_SESSION:-claude}:${AI_SESSION:-claude}.3 BTab
 
 **ボスの対応**:
 - 個別報告を受け取ったら、進捗状況を把握
-- 全エージェントの完了フラグ（`dist/tmp/エージェント*_done.txt`）を確認
+- 全エージェントの完了フラグ（`dist/tmp/<AI_SESSION>/エージェント*_done.txt`）を確認
 - 全員完了後、結果を統合してユーザーに報告
 
 ## デュアルセッション運用（Claude + Codex）

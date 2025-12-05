@@ -33,11 +33,12 @@
 【完了報告の流れ】
 1. タスク実行
 2. 完了フラグ作成（自分の番号を使用）:
-   mkdir -p ./dist/tmp && touch ./dist/tmp/エージェント${PANE_INDEX}_done.txt
+   FLAG_DIR="./dist/tmp/${AI_SESSION:-claude}"
+   mkdir -p "$FLAG_DIR" && touch "$FLAG_DIR/エージェント${PANE_INDEX}_done.txt"
 3. まだ全員が完了していない場合は個別報告（先行完了者のみ）:
    ./multi-agent-tmux/send-message.sh ボス "エージェント${PANE_INDEX}完了：[作業内容の要約]"
 4. 全員完了を確認できたら（自分が最後なら）全員完了報告のみ送信:
-   if [ -f ./dist/tmp/エージェント1_done.txt ] && [ -f ./dist/tmp/エージェント2_done.txt ] && [ -f ./dist/tmp/エージェント3_done.txt ]; then
+   if [ -f "$FLAG_DIR/エージェント1_done.txt" ] && [ -f "$FLAG_DIR/エージェント2_done.txt" ] && [ -f "$FLAG_DIR/エージェント3_done.txt" ]; then
        ./multi-agent-tmux/send-message.sh ボス "全員作業完了しました"
    fi
 
