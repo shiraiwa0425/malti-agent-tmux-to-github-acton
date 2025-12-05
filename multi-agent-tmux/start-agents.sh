@@ -125,7 +125,7 @@ start_session() {
     fi
 
     log_info "${session_name}用セッションを起動中..."
-    "$SCRIPT_DIR/setup.sh" "$session_name"
+    "$SCRIPT_DIR/setup.sh" --no-prompt "$session_name"
     log_success "${session_name}用セッション起動完了"
 }
 

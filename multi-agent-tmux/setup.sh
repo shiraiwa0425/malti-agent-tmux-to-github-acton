@@ -39,6 +39,7 @@ usage() {
 オプション:
   -y                  作成後に自動でセッションにアタッチ
   -f, --force         既存セッションがあっても削除して再作成
+  --no-prompt         接続確認プロンプトを表示しない（スクリプトから呼び出す用）
   -h, --help          このヘルプを表示
 
 例:
@@ -52,6 +53,7 @@ EOF
 # コマンドライン引数の処理
 AUTO_ATTACH=false
 FORCE_KILL=false
+NO_PROMPT=false
 SESSION_NAME="claude"
 
 while [[ $# -gt 0 ]]; do
@@ -62,6 +64,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -f|--force)
             FORCE_KILL=true
+            shift
+            ;;
+        --no-prompt)
+            NO_PROMPT=true
             shift
             ;;
         -h|--help)
@@ -179,7 +185,7 @@ echo ""
 if [[ "$AUTO_ATTACH" == true ]]; then
     echo "自動的にセッションに接続します..."
     tmux attach -t "$SESSION_NAME"
-else
+elif [[ "$NO_PROMPT" == false ]]; then
     echo "自動的にセッションに接続しますか？ (y/n)"
     read -r response
     if [[ "$response" =~ ^[Yy]$ ]]; then
