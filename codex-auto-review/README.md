@@ -130,7 +130,7 @@ GitHub Actions と Codex を使った自動コードレビューシステム
 
 2. **コミットをプッシュ**
 
-   - GitHub Actions が「@codex 日本語でレビューしてください」とコメント
+   - GitHub Actions が「@codex レビューしてください」とコメント
    - Codex がレビューを実施
 
 3. **Badge 付きコメントを投稿**

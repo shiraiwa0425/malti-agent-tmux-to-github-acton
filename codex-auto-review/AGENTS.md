@@ -2,7 +2,7 @@
 
 ## プロジェクトコンテキスト
 
-このサブモジュールの親プロジェクトの詳細は、親リポジトリの **[PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)** を参照してください。
+プロジェクト全体の詳細は **[PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)** を参照してください。
 
 ## codex-auto-review 固有の設定
 

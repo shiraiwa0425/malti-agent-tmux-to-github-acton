@@ -141,17 +141,16 @@ bunx create-next-app # Next.jsプロジェクト作成
 │   ├── hooks/              # セッションフック
 │   └── settings.json
 ├── dist/                   # 成果物
-├── codex-auto-review/      # サブモジュール
-└── multi-agent-tmux/       # サブモジュール
+├── codex-auto-review/      # 自動コードレビューシステム
+└── multi-agent-tmux/       # マルチエージェントtmuxシステム
     ├── setup.sh
     ├── send-message.sh
     ├── orchestrate.sh
-    └── instructions/       # boss.md, agent.md
+    └── workflows/          # ワークフロー定義
 ```
 
 ## Git操作
 
-- **サブモジュール**: codex-auto-review、multi-agent-tmux
 - **ブランチ保護**: mainへの直接プッシュは避け、PR経由で変更
 
 **詳細**: [README.md](README.md)
@@ -161,7 +160,6 @@ bunx create-next-app # Next.jsプロジェクト作成
 レビューやコード変更時に確認すべき共通チェックリスト：
 
 - **成果物配置**: すべての生成物は `dist/` ディレクトリに配置されているか
-- **サブモジュール**: codex-auto-review、multi-agent-tmuxへの変更は適切に管理されているか
 - **ブランチルール**: mainへの直接プッシュを避け、PR経由で変更しているか
 - **命名規則**: 成果物は `YYYYMMDD-HHMMSS-プロジェクト名` 形式に従っているか
 - **ドキュメント**: 重要な変更はPROJECT_CONTEXT.mdに反映されているか
