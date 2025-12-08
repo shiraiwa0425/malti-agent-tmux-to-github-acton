@@ -14,8 +14,8 @@
 ### クローン
 
 ```bash
-git clone <repository-url>
-cd malti-agent-tmux-to-github-acton
+git clone <repository-url> tmux-multi-agent
+cd tmux-multi-agent
 ```
 
 ### マルチエージェントシステムの起動
