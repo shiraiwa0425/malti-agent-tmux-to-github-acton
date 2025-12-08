@@ -9,15 +9,8 @@ __pycache__/
 .venv/
 venv/
 
-# Keep dist directory structure but ignore large temporary files
-dist/**/*.tmp
-dist/**/*.temp
-dist/**/tmp/
-!dist/**/.gitkeep
-
-# Ignore dist/outputs and dist/evaluations directories
-dist/outputs/
-dist/evaluations/
+# Ignore all dist content
+dist/
 
 # Claude Code local settings
 .claude/settings.local.json
